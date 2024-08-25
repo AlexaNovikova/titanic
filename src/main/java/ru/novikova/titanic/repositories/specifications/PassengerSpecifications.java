@@ -30,28 +30,31 @@ public class PassengerSpecifications {
 
     private static Specification<Passenger> hasNoSiblingsOnBoard() {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder
-                .equal(root.get("siblings_aboard"), 0);
+                .equal(root.get("siblingsAboard"), 0);
     }
 
     private static Specification<Passenger> hasNoParentsOnBoard() {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder
-                .equal(root.get("parents_aboard"), 0);
+                .equal(root.get("parentsAboard"), 0);
     }
 
 
     public static Specification<Passenger> build(MultiValueMap<String, String> params) {
         Specification<Passenger> spec = Specification.where(null);
         if (params.containsKey("survived") && !params.getFirst("survived").isBlank()) {
-            spec = spec.and(PassengerSpecifications.survived
-                    (Boolean.parseBoolean(params.getFirst("survived"))));
+            if (Boolean.parseBoolean(params.getFirst("survived"))) {
+                spec = spec.and(PassengerSpecifications.survived
+                        (Boolean.parseBoolean(params.getFirst("survived"))));
+            }
         }
+
         if (params.containsKey("is_male") && !params.getFirst("is_male").isBlank()) {
             if (Boolean.parseBoolean(params.getFirst("is_male"))) {
                 spec = spec.and(PassengerSpecifications.genderEquals("male"));
             }
         }
         if (params.containsKey("is_adult") && !params.getFirst("is_adult").isBlank()) {
-            if(Boolean.parseBoolean(params.getFirst("is_adult"))) {
+            if (Boolean.parseBoolean(params.getFirst("is_adult"))) {
                 spec = spec.and(PassengerSpecifications.isAdult(Boolean.parseBoolean(params.getFirst("is_adult"))));
             }
         }

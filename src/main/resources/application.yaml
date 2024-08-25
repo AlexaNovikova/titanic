@@ -2,9 +2,6 @@ server:
   port: 8189
   servlet:
     context-path: /titanic
-properties:
-  URL: https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv
-  adultAgeCriteria: 16
 
 spring:
   application:
