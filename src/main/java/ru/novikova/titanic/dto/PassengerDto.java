@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.novikova.titanic.entity.Passenger;
 import ru.novikova.titanic.enums.PassengerClass;
 
 @Data
@@ -20,4 +21,5 @@ public class PassengerDto {
     private int siblingsAboard;
     private int parentsAboard;
     private double fare;
+
 }

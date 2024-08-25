@@ -1,0 +1,98 @@
+
+<!doctype html>
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-cookies.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <script src="index.js"></script>
+</head>
+<body>
+<div class="container" ng-controller="indexController">
+<p></p>
+<h3>Filter</h3>
+<form novalidate ng-submit="loadPage()">
+    <div class="form-group row">
+        <div class="form-group col-md-3">
+            <label for="filterSurvived">Survived</label>
+            <input class="form-control" type="checkbox" ng-model="filter.survived" id="filterSurvived">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterMale">Male</label>
+            <input class="form-control" type="checkbox" ng-model="filter.is_male" id="filterMale">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterAge">Is Adult</label>
+            <input class="form-control" type="checkbox" ng-model="filter.is_adult" id="filterAge">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterNoRelatives">Has no relatives on board</label>
+            <input class="form-control" type="checkbox" ng-model="filter.no_relatives" id="filterNoRelatives">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="filterSubmit">Filter</label>
+            <button class="form-control btn btn-primary" id="filterSubmit" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
+<p></p>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Survived</th>
+        <th scope="col">Class</th>
+        <th scope="col">Name</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Age</th>
+        <th scope="col">Number of siblings Aboard</th>
+        <th scope="col">Number of parents Aboard</th>
+        <th scope="col">Fare</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="p in passengersPage.content">
+        <td>{{p.id}}</td>
+        <td>{{p.survived}}</td>
+        <td>{{p.name}}</td>
+        <td>{{p.pclass}}</td>
+        <td>{{p.sex}}</td>
+        <td>{{p.age}}</td>
+        <td>{{p.siblingsAboard}}</td>
+        <td>{{p.parentsAboard}}</td>
+        <td>{{p.fare}}</td>
+    </tr>
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation" ng-show="passengersPage.totalPages > 1">
+<ul class="pagination">
+    <li ng-class="passengersPage.first ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" ng-click="loadPage(1)">Start Page</a>
+    </li>
+
+    <li ng-class="passengersPage.first ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" ng-click="loadPage(passengersPage.number)">Prev.</a>
+    </li>
+
+    <li ng-class="passengersPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'"
+        ng-repeat="pageIndex in paginationArray">
+        <a class="page-link" ng-click="loadPage(pageIndex)">{{pageIndex}}</a>
+    </li>
+
+    <li ng-class="passengersPage.last ? 'page-item disabled' : 'page-item'">
+        <a class="page-link" ng-click="loadPage(passengersPage.number + 2)">Next</a>
+    </li>
+</ul>
+</nav>
+</div>
+</body>
+</html>
