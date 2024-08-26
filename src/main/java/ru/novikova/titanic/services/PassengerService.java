@@ -4,15 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.novikova.titanic.dto.PassengerDto;
+import ru.novikova.titanic.dto.ResponseDto;
 import ru.novikova.titanic.entity.Passenger;
 import ru.novikova.titanic.repositories.PassengerRepository;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,5 +62,24 @@ public class PassengerService implements BasicService<Passenger, Long> {
     public Page<PassengerDto> findAll(int page, int pageSize) {
         return passengerRepository.findAll(PageRequest.of(page-1, pageSize))
                 .map(p->modelMapper.map(p, PassengerDto.class));
+    }
+
+    public List<PassengerDto> findByName(String name) {
+        return passengerRepository.findByName(name).stream()
+                .map(p->modelMapper.map(p, PassengerDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public ResponseDto findAll(Specification<Passenger> specification, int page, int pageSize, Sort sort) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setPassengerDtoPage(passengerRepository.findAll(specification, PageRequest.of(page - 1, pageSize, sort))
+                .map(o->modelMapper.map(o, PassengerDto.class)));
+        List<Passenger> passengers = passengerRepository.findAll(specification);
+        responseDto.setSumFair(passengers.stream().mapToDouble(Passenger::getFare).sum());
+        responseDto.setSumSurvivalPassengers((int) passengers.stream().filter(p->p.getSurvived().equals(true)).count());
+        responseDto.setSumPassengersWithRelativesOnBoard((int)passengers.stream()
+                .filter(p-> (p.getParentsAboard()>0 || p.getSiblingsAboard()>0))
+                .count());
+        return responseDto;
     }
 }

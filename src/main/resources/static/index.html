@@ -1,13 +1,14 @@
-
 <!doctype html>
 <html ng-app="app">
 
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.bundle.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-cookies.js"></script>
@@ -16,83 +17,167 @@
 </head>
 <body>
 <div class="container" ng-controller="indexController">
-<p></p>
-<h3>Filter</h3>
-<form novalidate ng-submit="loadPage()">
-    <div class="form-group row">
-        <div class="form-group col-md-3">
-            <label for="filterSurvived">Survived</label>
-            <input class="form-control" type="checkbox" ng-model="filter.survived" id="filterSurvived">
+    <p></p>
+    <h3>Фильтр</h3>
+    <form novalidate ng-submit="loadPage()">
+        <div class="form-group row">
+            <div class="form-group col-md-3">
+                <label for="filterSurvived">Выжившие</label>
+                <input class="form-control" type="checkbox" ng-model="filter.survived" id="filterSurvived">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterMale">Мужской пол</label>
+                <input class="form-control" type="checkbox" ng-model="filter.is_male" id="filterMale">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterAge">Совершеннолетние</label>
+                <input class="form-control" type="checkbox" ng-model="filter.is_adult" id="filterAge">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="filterNoRelatives">Не имеют родтсвенников на борту</label>
+                <input class="form-control" type="checkbox" ng-model="filter.no_relatives" id="filterNoRelatives">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="sortValue">Поле для сортировки</label>
+                <select class="form-select" ng-model="sort" aria-label="Сортировка" id="sortValue">
+                    <option selected="selected" value="id">Сортировка по умолчанию</option>
+                    <option value="name">Сортировка по имени</option>
+                    <option value="age">Сортировка по возрасту</option>
+                    <option value="fare">Сортировка по стоимости</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="sortType">Тип сортировки</label>
+                <select class="form-select" ng-model="stype" aria-label="Тип сортировки" id="sortType">
+                    <option selected="selected" value="ASC">По возрастанию</option>
+                    <option value="DESC">По убыванию</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="passengersPageCount">Кол-во пассажиров на странице</label>
+                <select class="form-select" ng-model="size" aria-label="Кол-во пассажиров на странице"  id="passengersPageCount">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option selected="selected" value="100">100</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <button class="form-control btn btn-primary" id="filterSubmit" type="submit">ПРИМЕНИТЬ</button>
+            </div>
         </div>
-        <div class="form-group col-md-3">
-            <label for="filterMale">Male</label>
-            <input class="form-control" type="checkbox" ng-model="filter.is_male" id="filterMale">
-        </div>
-        <div class="form-group col-md-3">
-            <label for="filterAge">Is Adult</label>
-            <input class="form-control" type="checkbox" ng-model="filter.is_adult" id="filterAge">
-        </div>
-        <div class="form-group col-md-3">
-            <label for="filterNoRelatives">Has no relatives on board</label>
-            <input class="form-control" type="checkbox" ng-model="filter.no_relatives" id="filterNoRelatives">
-        </div>
-        <div class="form-group col-md-3">
-            <label for="filterSubmit">Filter</label>
-            <button class="form-control btn btn-primary" id="filterSubmit" type="submit">Submit</button>
-        </div>
+    </form>
+
+    <p></p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Выжил</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Класс</th>
+            <th scope="col">Пол</th>
+            <th scope="col">Возраст</th>
+            <th scope="col">Кол-во сублингов на борту</th>
+            <th scope="col">Кол-во родителей на борту</th>
+            <th scope="col">Стоимость билета</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in passengersPage.content">
+            <td>{{p.id}}</td>
+            <td>{{p.survived}}</td>
+            <td>{{p.name}}</td>
+            <td>{{p.pclass}}</td>
+            <td>{{p.sex}}</td>
+            <td>{{p.age}}</td>
+            <td>{{p.siblingsAboard}}</td>
+            <td>{{p.parentsAboard}}</td>
+            <td>{{p.fare}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation" ng-show="passengersPage.totalPages > 1">
+        <ul class="pagination">
+            <li ng-class="passengersPage.first ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="loadPage(1)">Start Page</a>
+            </li>
+
+            <li ng-class="passengersPage.first ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="loadPage(passengersPage.number)">Prev.</a>
+            </li>
+
+            <li ng-class="passengersPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'"
+                ng-repeat="pageIndex in paginationArray">
+                <a class="page-link" ng-click="loadPage(pageIndex)">{{pageIndex}}</a>
+            </li>
+            <li ng-class="passengersPage.last ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" ng-click="loadPage(passengersPage.number + 2)">Next</a>
+            </li>
+
+        </ul>
+    </nav>
+    <p></p>
+
+    <h3>Статистика</h3>
+    <p></p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Общая сумма оплаты проезда</th>
+            <th scope="col">Количество людей имеющих родственников на борту</th>
+            <th scope="col">Количество выживших на борту</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{sumFair}}</td>
+            <td>{{sumPassengersWithRelativesOnBoard}}</td>
+            <td>{{sumSurvived}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h3>Поиск пассажира по имени</h3>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Passenger Name" aria-label="Passenger's name"
+               ng-model="name" aria-describedby="findByName">
+        <button class="btn btn-outline-secondary" ng-click="findPassengerByName(name)" id="findByName">Найти</button>
     </div>
-</form>
+    <p></p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Выжил</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Класс</th>
+            <th scope="col">Пол</th>
+            <th scope="col">Возраст</th>
+            <th scope="col">Кол-во сублингов на борту</th>
+            <th scope="col">Кол-во родителей на борту</th>
+            <th scope="col">Стоимость билета</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in passenger">
+            <td>{{p.id}}</td>
+            <td>{{p.survived}}</td>
+            <td>{{p.name}}</td>
+            <td>{{p.pclass}}</td>
+            <td>{{p.sex}}</td>
+            <td>{{p.age}}</td>
+            <td>{{p.siblingsAboard}}</td>
+            <td>{{p.parentsAboard}}</td>
+            <td>{{p.fare}}</td>
+        </tr>
+        </tbody>
+    </table>
 
-<p></p>
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Survived</th>
-        <th scope="col">Class</th>
-        <th scope="col">Name</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Age</th>
-        <th scope="col">Number of siblings Aboard</th>
-        <th scope="col">Number of parents Aboard</th>
-        <th scope="col">Fare</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="p in passengersPage.content">
-        <td>{{p.id}}</td>
-        <td>{{p.survived}}</td>
-        <td>{{p.name}}</td>
-        <td>{{p.pclass}}</td>
-        <td>{{p.sex}}</td>
-        <td>{{p.age}}</td>
-        <td>{{p.siblingsAboard}}</td>
-        <td>{{p.parentsAboard}}</td>
-        <td>{{p.fare}}</td>
-    </tr>
-    </tbody>
-</table>
-
-<nav aria-label="Page navigation" ng-show="passengersPage.totalPages > 1">
-<ul class="pagination">
-    <li ng-class="passengersPage.first ? 'page-item disabled' : 'page-item'">
-        <a class="page-link" ng-click="loadPage(1)">Start Page</a>
-    </li>
-
-    <li ng-class="passengersPage.first ? 'page-item disabled' : 'page-item'">
-        <a class="page-link" ng-click="loadPage(passengersPage.number)">Prev.</a>
-    </li>
-
-    <li ng-class="passengersPage.number == pageIndex - 1 ? 'page-item active' : 'page-item'"
-        ng-repeat="pageIndex in paginationArray">
-        <a class="page-link" ng-click="loadPage(pageIndex)">{{pageIndex}}</a>
-    </li>
-
-    <li ng-class="passengersPage.last ? 'page-item disabled' : 'page-item'">
-        <a class="page-link" ng-click="loadPage(passengersPage.number + 2)">Next</a>
-    </li>
-</ul>
-</nav>
 </div>
 </body>
 </html>

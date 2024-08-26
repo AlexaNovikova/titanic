@@ -3,16 +3,6 @@ package ru.novikova.titanic.repositories.specifications;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.MultiValueMap;
 import ru.novikova.titanic.entity.Passenger;
-//
-//На экране должны быть кнопки которые фильтруют данные:
-//
-//показать всех выживших пассажиров.
-//
-//показать всех совершеннолетих пассажирова (страше 16 лет)
-//
-//показать всех пассажиров мужского пола
-//
-//показать всех пассажиров кто не имеет родственников.
 
 
 public class PassengerSpecifications {
