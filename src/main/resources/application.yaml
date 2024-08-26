@@ -2,18 +2,9 @@ server:
   port: 8189
   servlet:
     context-path: /titanic
-
 spring:
   application:
     name: titanic
-#  cache:
-#    type: redis
-#    cache-names: redis-cache
-#  data:
-#    redis:
-#      host: localhost
-#      port: 6379
-#      password: parole
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
@@ -32,10 +23,5 @@ spring:
 logging:
   level:
     org.springframework: INFO
-    org.pablos.backend: DEBUG
-#  logback:
-#    rollingpolicy:
-#      max-file-size: 10MB
-#      max-history: 5
   file:
     name: ./logs/${spring.application.name}.log

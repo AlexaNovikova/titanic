@@ -58,6 +58,14 @@ public class Passenger {
         this.fare = fare;
     }
 
+    /**
+     * Конструктор
+     * @param passengerValues - массив строк,  в котором
+     *                       содержаться значения для полей класса
+     *                        Passenger в след. порядке : "survived", "pclass",
+     *                        "name", "sex", "age",
+     *                        "siblingsAboard", "parentsAboard", "fare".
+     */
     public Passenger (String [] passengerValues) {
         this(
                 Integer.parseInt(passengerValues[0]) > 0,

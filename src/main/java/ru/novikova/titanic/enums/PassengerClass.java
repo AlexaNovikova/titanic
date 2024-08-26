@@ -10,6 +10,11 @@ public enum PassengerClass {
         this.classNumber = classNumber;
     }
 
+    /**
+     *
+     * @param classNumber - номер класса 1, 2 или 3
+     * @return значение PassengerClass, соответсвующее номеру
+     */
     public static PassengerClass getPassengerClassByNumber(int classNumber) {
         return switch (classNumber) {
             case 1 -> PassengerClass.FIRST;

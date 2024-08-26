@@ -19,6 +19,7 @@ angular.module('app', ['ngRoute', 'ngStorage', 'ngCookies']).controller('indexCo
             }
         }).then(function (response) {
             $scope.passengersPage = response.data.passengerDtoPage;
+            $scope.pages = response.data.passengerDtoPage.totalPages;
             $scope.sumSurvived = response.data.sumSurvivalPassengers;
             $scope.sumFair = response.data.sumFair;
             $scope.sumPassengersWithRelativesOnBoard = response.data.sumPassengersWithRelativesOnBoard;
@@ -42,7 +43,7 @@ angular.module('app', ['ngRoute', 'ngStorage', 'ngCookies']).controller('indexCo
             url: contextPath + '/api/v1/passengers/' + name,
             method: 'GET'
         }).then(function (response) {
-            $scope.passenger = response.data
+            $scope.passengers = response.data
         });
     };
 

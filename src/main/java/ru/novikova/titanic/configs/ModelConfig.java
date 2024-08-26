@@ -14,10 +14,4 @@ public class ModelConfig {
         return new ModelMapper();
     }
 
-    @Configuration
-    @EnableSpringDataWebSupport(
-            pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO
-    )
-    public class JacksonConfig {
-    }
 }

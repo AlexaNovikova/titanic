@@ -7,11 +7,14 @@ import lombok.NoArgsConstructor;
 import ru.novikova.titanic.entity.Passenger;
 import ru.novikova.titanic.enums.PassengerClass;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassengerDto {
+public class PassengerDto implements Serializable {
 
+    private static final long serialVersionUID = 3701260130532993112L;
     private Long id;
     private boolean survived;
     private PassengerClass pclass;
