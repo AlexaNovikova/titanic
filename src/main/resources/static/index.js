@@ -19,7 +19,7 @@ angular.module('app', ['ngRoute', 'ngStorage', 'ngCookies']).controller('indexCo
             }
         }).then(function (response) {
             $scope.passengersPage = response.data.passengerDtoPage;
-            $scope.pages = response.data.passengerDtoPage.totalPages;
+            $scope.pages = response.data.passengerDtoPage.page.totalPages;
             $scope.sumSurvived = response.data.sumSurvivalPassengers;
             $scope.sumFair = response.data.sumFair;
             $scope.sumPassengersWithRelativesOnBoard = response.data.sumPassengersWithRelativesOnBoard;
@@ -30,8 +30,8 @@ angular.module('app', ['ngRoute', 'ngStorage', 'ngCookies']).controller('indexCo
             }
 
             let maxPageIndex = page + 2;
-            if (maxPageIndex > $scope.passengersPage.totalPages) {
-                maxPageIndex = $scope.passengersPage.totalPages;
+            if (maxPageIndex > $scope.passengersPage.page.totalPages) {
+                maxPageIndex = $scope.passengersPage.page.totalPages;
             }
 
             $scope.paginationArray = $scope.generatePagesIndexes(minPageIndex, maxPageIndex);
