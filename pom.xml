@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>ru.novikova</groupId>
 	<artifactId>titanic</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>titanic</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Test project for Iteration</description>
 	<url/>
 	<licenses>
 		<license/>
