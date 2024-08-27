@@ -12,9 +12,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassengerDto implements Serializable {
+public class PassengerDto{
 
-    private static final long serialVersionUID = 3701260130532993112L;
     private Long id;
     private boolean survived;
     private PassengerClass pclass;
